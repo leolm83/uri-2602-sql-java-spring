@@ -11,11 +11,11 @@ import java.util.List;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer,Long> {
-    @Query(value = "SELECT * FROM CUSTOMERS WHERE STATE = :state",nativeQuery = true)
+    @Query(value = "SELECT * FROM CUSTOMERS WHERE UPPER(STATE) = UPPER(:state)",nativeQuery = true)
     List<CustomerNameMinProjection> searchByState(String state);
-    @Query(value = "SELECT obj FROM Customer obj WHERE obj.state = :state")
+    @Query(value = "SELECT obj FROM Customer obj WHERE UPPER(obj.state) = UPPER(:state)")
     List<Customer> searchByStateWithJPQL(String state);//busca todos os dados
-    @Query(value = "SELECT new com.devsuperior.uri2602.dtos.CustomerMinDTO(obj.name) FROM Customer obj WHERE obj.state = :state")
+    @Query(value = "SELECT new com.devsuperior.uri2602.dtos.CustomerMinDTO(obj.name) FROM Customer obj WHERE UPPER(obj.state) = UPPER(:state)")
     List<CustomerMinDTO> searchNameByStateWithJPQL(String state);//busca todos os dados
 
 }
