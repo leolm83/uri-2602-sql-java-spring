@@ -1,5 +1,6 @@
 package com.devsuperior.uri2602;
 
+import com.devsuperior.uri2602.dtos.CustomerMinDTO;
 import com.devsuperior.uri2602.entities.Customer;
 import com.devsuperior.uri2602.projections.CustomerNameMinProjection;
 import com.devsuperior.uri2602.repositories.CustomerRepository;
@@ -11,6 +12,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class Uri2602Application {
@@ -24,8 +26,9 @@ public class Uri2602Application {
 	@EventListener(ApplicationReadyEvent.class)
 	public void run() {
 		List<CustomerNameMinProjection> result = customerRepository.searchByState("RS");
-		for (CustomerNameMinProjection customerNameMinProjection: result){
-			System.out.println(customerNameMinProjection.getName());
+		List<CustomerMinDTO> dtos = result.stream().map(item -> new CustomerMinDTO(item)).collect(Collectors.toList());
+		for (CustomerMinDTO customerMinDTO: dtos){
+			System.out.println(customerMinDTO.getName());
 		}
 		System.out.println("acabou!");
 	}
